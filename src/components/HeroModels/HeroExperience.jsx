@@ -50,12 +50,21 @@ const HeroExperience = () => {
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
         dpr={[1, 2]}
-        style={{ width: "100%", height: "100%", position: "absolute" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          inset: 0,
+        }}
       >
         <ambientLight intensity={0.8} />
         <directionalLight position={[5, 5, 5]} intensity={0.7} />
         <OrbitControls enablePan={false} enableZoom={false} />
-        <Starfield count={window.innerWidth < 768 ? 100 : 200} />
+        <Starfield
+          count={
+            typeof window !== "undefined" && window.innerWidth < 768 ? 100 : 200
+          }
+        />
       </Canvas>
     </Suspense>
   );
