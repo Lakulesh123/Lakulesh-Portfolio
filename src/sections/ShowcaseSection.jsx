@@ -53,7 +53,7 @@ const ShowcaseSection = () => {
           {/* LEFT */}
           <div className="first-project-wrapper" ref={project1Ref}>
             <div className="image-wrapper">
-              <img src="/images/project1.png" alt="Ryde" />
+              <img src="/images/project1.png" alt="Ryde" loading="lazy" />
             </div>
             <div className="text-content">
               <h2>
@@ -84,7 +84,11 @@ const ShowcaseSection = () => {
 
             <div className="project" ref={project3Ref}>
               <div className="image-wrapper bg-[#ffe7db]">
-                <img src="/images/project3.png" alt="YC Directory" />
+                <img
+                  src="/images/project3.png"
+                  alt="YC Directory"
+                  loading="lazy"
+                />
               </div>
               <h2>
                 YC Directory platform which can very helping to get investment

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import TitleHeader from "../components/TitleHeader";
 import { expCards } from "../constants";
 import GlowCard from "../components/GlowCard";
@@ -9,15 +9,16 @@ import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 
 const ExperienceSection = () => {
+  const timelineRefs = useRef([]);
+
   useGSAP(() => {
-    // Animate cards sliding in from left
+    // Animate cards sliding from left
     gsap.utils.toArray(".timeline-card").forEach((card) => {
       gsap.from(card, {
         xPercent: -100,
         opacity: 0,
-        transformOrigin: "left left",
         duration: 1,
-        ease: "Power2.inout",
+        ease: "power2.out",
         scrollTrigger: {
           trigger: card,
           start: "top 80%",
@@ -25,32 +26,32 @@ const ExperienceSection = () => {
       });
     });
 
-    // Animate timeline shrink on scroll
-    gsap.to(".timeline", {
-      transformOrigin: "bottom bottom",
-      ease: "power1.inOut",
-      scrollTrigger: {
-        trigger: ".timeline",
-        start: "top center",
-        end: "70% center",
-        onUpdate: (self) => {
-          gsap.to(".timeline", {
-            scaleY: 1 - self.progress,
-          });
+    // Animate each timeline scale on scroll
+    timelineRefs.current.forEach((timeline) => {
+      if (!timeline) return;
+      gsap.to(timeline, {
+        scaleY: 0,
+        transformOrigin: "bottom center",
+        ease: "power1.inOut",
+        scrollTrigger: {
+          trigger: timeline,
+          start: "top center",
+          end: "bottom center",
+          scrub: true,
         },
-      },
+      });
     });
 
-    // Fade in experience text
+    // Fade in text
     gsap.utils.toArray(".expText").forEach((text) => {
       gsap.from(text, {
-        xPercent: 0,
         opacity: 0,
+        y: 50,
         duration: 1,
-        ease: "Power2.inout",
+        ease: "power2.out",
         scrollTrigger: {
           trigger: text,
-          start: "top 60%",
+          start: "top 70%",
         },
       });
     });
@@ -81,7 +82,15 @@ const ExperienceSection = () => {
                 <div className="xl:w-4/6">
                   <div className="flex items-start">
                     <div className="timeline-wrapper">
-                      <div className="timeline" />
+                      <div
+                        className="timeline"
+                        ref={(el) => (timelineRefs.current[index] = el)}
+                        style={{
+                          transform: "scaleY(1)",
+                          transition:
+                            "transform 0.4s cubic-bezier(0.4,0,0.2,1)",
+                        }}
+                      />
                       <div className="gradient-line w-1 h-full" />
                     </div>
 

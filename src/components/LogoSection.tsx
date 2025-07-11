@@ -4,7 +4,7 @@ import { logoIconsList } from "../constants/index";
 const LogoIcon = ({ icon }) => {
   return (
     <div className="flex-none flex justify-center items-center marquee-item">
-      <img src={icon.imgPath} alt={icon.name || "logo"} />
+      <img src={icon.imgPath} alt={icon.name || "logo"} loading="lazy" />
     </div>
   );
 };

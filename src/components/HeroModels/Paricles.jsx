@@ -1,7 +1,7 @@
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 
-const Particles = ({ count = 200 }) => {
+const Particles = ({ count = 40 }) => {
   const mesh = useRef();
 
   const particles = useMemo(() => {
@@ -10,10 +10,10 @@ const Particles = ({ count = 200 }) => {
       temp.push({
         position: [
           (Math.random() - 0.5) * 10,
-          Math.random() * 10 + 5, // higher starting point
+          Math.random() * 10 + 5,
           (Math.random() - 0.5) * 10,
         ],
-        speed: 0.005 + Math.random() * 0.001,
+        speed: 0.03 + Math.random() * 0.02, // much faster
       });
     }
     return temp;
@@ -30,12 +30,15 @@ const Particles = ({ count = 200 }) => {
     mesh.current.geometry.attributes.position.needsUpdate = true;
   });
 
-  const positions = new Float32Array(count * 3);
-  particles.forEach((p, i) => {
-    positions[i * 3] = p.position[0];
-    positions[i * 3 + 1] = p.position[1];
-    positions[i * 3 + 2] = p.position[2];
-  });
+  const positions = useMemo(() => {
+    const arr = new Float32Array(count * 3);
+    particles.forEach((p, i) => {
+      arr[i * 3] = p.position[0];
+      arr[i * 3 + 1] = p.position[1];
+      arr[i * 3 + 2] = p.position[2];
+    });
+    return arr;
+  }, [particles, count]);
 
   return (
     <points ref={mesh}>
@@ -49,9 +52,9 @@ const Particles = ({ count = 200 }) => {
       </bufferGeometry>
       <pointsMaterial
         color="#ffffff"
-        size={0.05}
+        size={0.15}
         transparent
-        opacity={0.9}
+        opacity={0.95}
         depthWrite={false}
       />
     </points>
